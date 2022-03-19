@@ -25,6 +25,8 @@
  **       guide and other starter code.
  **   11 Nov 2021: mrussell
  **       refactored map from string->Artist to string->Vertex*
+ **
+ **   12 Dec 2021: edited by Qing Cheng
  **/
 
 #include <algorithm>
@@ -39,7 +41,7 @@
 #include "Artist.h"
 #include "CollabGraph.h"
 
-using namespace std;
+using namespace std; 
 
 /*********************************************************************
  ******************** public function definitions ********************
@@ -141,8 +143,30 @@ CollabGraph& CollabGraph::operator=(const CollabGraph& rhs) {
  * @postconditions: the graph is populated based on the provided artists
  * @returns: none
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CollabGraph::populate_graph(const vector<Artist>& artists) {
-    cout << "populateGraph is unimplemented" << endl;
+void CollabGraph::populate_graph(const vector<Artist>& artists) 
+{
+    size_t size = artists.size(); 
+    for (size_t i = 0; i < size; i++)
+    {
+        insert_vertex(artists.at(i));
+    }
+
+    Artist one, two; 
+    //compare every artist, starting from the first, to every other 
+    //artist to check whether they have a collab
+    //index must be greater than or equal to 0
+    for (size_t a = 0; a >= 0 and a <= size - 2; a++)   
+    {
+        one = artists.at(a); 
+        for (size_t b = a + 1; b <= size - 1; b++)
+        {
+            two = artists.at(b); 
+            string song_name = one.get_collaboration(two); 
+            if (not (song_name == "") and not (one.get_name() 
+                                            == two.get_name()))
+                insert_edge(one, two, song_name); 
+        }
+    }
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -410,8 +434,20 @@ string CollabGraph::get_edge(const Artist& a1, const Artist& a2) const {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 vector<Artist> CollabGraph::get_vertex_neighbors(const Artist& artist) const {
     vector<Artist> neighbors;
+    //get vertex of the artist
+    Vertex *artist_vertex = graph.at(artist.get_name()); 
 
-    cerr << "get_vertex_neighbors not yet implemented" << endl;
+    //inside vertex, get vector of edges
+    for (size_t i = 0; i < artist_vertex->neighbors.size(); i++)
+    {
+        //for each edge
+        Edge e = artist_vertex->neighbors.at(i);
+        Vertex *v = e.neighbor; 
+        Artist a = v->artist; 
+        
+        //push the neighbor vertex's artist onto vector of neighbor artists 
+        neighbors.push_back(a); 
+    }
 
     return neighbors;
 }
@@ -439,7 +475,32 @@ stack<Artist> CollabGraph::report_path(const Artist& source,
                                        const Artist& dest) const {
     stack<Artist> path;
 
-    cerr << "report_path not yet implemented" << endl;
+    if (not is_vertex(dest.get_name()) or not is_vertex(source.get_name()))
+        return path; 
+
+    //bottom item is the destination Artist 
+    path.push(dest);
+
+    Artist curr = dest; 
+    Artist pred = get_predecessor(curr); 
+
+    while (pred != source)
+    {
+        //if there is a break, there is no path
+        if (pred.get_name() == "")
+        {
+            stack <Artist> empty_stack; 
+            return empty_stack; 
+        }
+
+        path.push(pred); 
+        
+        curr = pred; 
+        pred = get_predecessor(curr); 
+    }
+
+    //this is the source Artist, on top of stack
+    path.push(pred); 
 
     return path;
 }

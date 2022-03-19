@@ -22,6 +22,8 @@
  **       pointers to all vertices
  **   11 Nov 2021: mrussell
  **       refactored map from string->Artist to string->Vertex*
+ **
+ **   12 Dec 2021: edited by Qing Cheng
  **/
 
 #ifndef __COLLAB_GRAPH__
@@ -53,7 +55,7 @@ class CollabGraph {
     CollabGraph& operator=(const CollabGraph& rhs);
 
     /* Mutators */
-    void populate_graph(const vector<Artist>& artists);
+    void populate_graph(const std::vector<Artist>& artists);
     void insert_vertex(const Artist& artist);
     void insert_edge(const Artist& a1, const Artist& a2,
                      const std::string& song);
@@ -99,7 +101,7 @@ class CollabGraph {
     void self_destruct();
     void enforce_valid_vertex(const Artist& artist) const;
 
-    std::unordered_map<std::string, Vertex*> graph;
+    std::unordered_map<std::string, Vertex*> graph; 
 };
 
 #endif /* __COLLAB_GRAPH__ */
