@@ -1,0 +1,29 @@
+1. How do you declare a stack that holds pointers to Node structs?
+
+#include <stack>
+
+stack<Node> stackOfNodes; 
+
+2. Write out the in-order, pre-order, level-order, and post-order output for the following tree
+
+       5
+      /  \
+     /    \
+    /      \
+   2       18
+  / \
+-4   3      
+in-order (left, curr, right):
+    -4, 2, 3, 5, 18
+pre-order (curr, left, right):
+    5, 2, -4, 3, 18
+level-order (each level):
+    5, 2, 18, -4, 3
+post-order (left, right, curr):
+    -4, 3, 2, 18, 5
+
+
+pointer to root Node
+
+base case: if pointer is nullptr (empty true), don't print anything, return 
+recursive case: 
