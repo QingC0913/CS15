@@ -1,1 +1,213 @@
+----------------------------------------------------------------------
+|                      CS 15 HW3: Binary Search Trees                |
+| [NAME]   Qing Cheng                                                |
+| [DATE]   11/17/2021
+----------------------------------------------------------------------
 
+                           ---- PURPOSE ----
+This program allows clients to create a binary search tree. Clients can 
+insert keys or remove keys from the tree, with additional features such 
+as finding the minimum or maximum key stored in the tree or the sum of all 
+the keys stored in the tree. 
+
+                      ---- ACKNOWLEDGEMENTS ----
+-lecture slides (trees, BST, and traversals)
+-StackOverflow, CPlusPlus for C++ syntax, usage, and debugging
+-classmates' and TAs' answers to questions on Piazza 
+
+                            ---- FILES ----
+                            
+-BinarySearchTree.h
+    A BinarySearchTree instance represents a Binary Search Tree data structure.
+    Every BST instance starts out empty, and the client can add and/or remove
+    keys into the tree, as well as other operations. 
+-BinarySearchTree.cpp
+    Duplicate keys in the BST are kept track by the count variable in each 
+    node. When printing the tree, an * next to a key denotes that the key 
+    contains duplicates. The public functions call a corresponding recursive 
+    private function to perform the operation. 
+-Makefile
+    file to link and compile the BST program (and other commands)
+-README
+    this file: documents testing, purpose, files included for submission 
+-hw3.cpp
+    This is a provided testing file, contains the driver main function that 
+    tests various functions of the BST class 
+-test.cpp
+    This is a testing file, contains the main function that creates BSTs and 
+    performs operations on them. (note about this file: for many of the tests
+    I just commented out the previous function calls and print statements so I
+    didn't have to create a new BST object every time, but I left in comments
+    about what each test is suppose to test and/or what the expected results of
+    the test should be)
+-my.txt
+    This is a testing file, contains the directed output from running   
+    the provided hw3.cpp. Used for diff testing with the sample the_hw3
+    
+                 ---- COMPILE / RUN INSTRUCTIONS ----
+the executable: hw3 
+-compile using 
+    make hw3 
+-run using 
+    ./hw3
+
+                ---- DATA STRUCTURES / ALGORITHMS ----  
+Binary search trees (BST)are a specific type of binary trees, which are, in 
+term, a specific type of tree structure. A tree is an ADT with a root 
+node, which can point to zero or more children nodes, which can, in term, point 
+to zero or more nodes. All node can only have one parent, except for the root 
+node which has no parent. There is no limit to how many children nodes each 
+node has. For binary trees, however, each node, including the root, can have 
+at most two children nodes. BSTs have an addition invariant condition, which is 
+that for a node n, the nodes on the left subtree of n must contain keys that 
+are less than the key of n, and the nodes on the right subtree of n must con-
+tain keys that are greater than the key of n.  
+
+Whether the BST contains duplicate keys depends on how the BST data structure
+is implemented. In the implementation for this project, duplicates are allowed;
+in order words, the BST supports multiset. However, we keep track of the number
+ of duplicates by the count variable stored in each unique node, and there are 
+ no two nodes with the same key stored. In addition to the key and the 
+ count, there are also pointers to the left child and the right child stored 
+ in each node. 
+
+The advantage of a BST is that all the keys in the tree are sorted, with the 
+smallest key to the left side of the tree and the largest to the right. If a 
+program is looking for a certain key in the BST, in general, the time 
+complexity for this operation is O(log n) because after each pass through, 
+the number of searches left to do is cut in half, which is much more efficient 
+than O(n), which is the time complexity if the program were to search through 
+each node to find the key, such as in a regular tree or a linked list. 
+
+One disadvantage of using a BST is that if it were built so that each successive
+node being inserted has a key greater than the previous, or each node being 
+inserted has a key less than the previous one, then we would end up with a 
+linked list. Then if we were to perform the find min or find max, in the worse
+case scenario we still end up with O(n) time complexity. In addition, in this 
+implementation, each public wrapper function calls a corresponding private 
+helper function in order to perform the operation, and since the private helper
+functions are performed recursively, this could be time and space inefficient 
+when they is a large number of inserts. 
+
+                     ---- ANSWERING QUESTIONS  ----  
+1. use find_min or find_max?
+    Yes, my implementation of the remove function will use the private find_min
+    function. The function can pass in the parent node of the right subtree 
+    in order to find the minimum key of that right subtree. This is used by 
+    the reference implementation, so this is what will be used, unless the node
+    to be removed has no right subtree. 
+    
+2.& 3. invalid node?
+    Yes, the find_min function can return a value that doesn't point to a 
+    valid node. If the node given to find_min or find_max is a null pointer, 
+    the function will return a null pointer. If the function doesn't return 
+    a null pointer, it will try to access the node's children nodes, which 
+    would lead to segmentation fault.  
+    
+4. pseudocode for private find_max()
+      check if node passed in is nullptr, 
+            if yes, return it
+      //will always be going to the right subtrees because we want the max
+      check if there is right node
+            if not, then this is the most right node/is the max
+                  return this
+            if yes, not the most right node yet
+                  recurse to the right node
+
+5. pseudocode for private find_min()
+      check if node passed in is nullptr, 
+            if yes, return it
+      //will always be going to the left subtrees because we want the min
+      check if there is left node
+            if not, then this is the most left node/is the min
+                  return this
+            if yes, not the most left node yet
+                  recurse to the left node
+
+6. pseudocode for post_order_delete()
+      check if tree is empty/if node is nullptr
+            if yes, return    //there is nothing to delete
+      recurse to left child 
+      recurse to right child          
+      delete current node 
+
+                           ---- TESTING ----
+-created a test file with a main
+-created a newNode function in BST.cpp
+-implemented private insert func, will print a statement whenever a new node
+is created (from "new" operator)
+-added print statements in each recursive case (key is less than curr node's
+ key -> go to left subtree, key is greater than curr node's key -> go to right
+ subtree, is equal, node already exists, increment the count, node doesn't 
+ exist, need to create a new node, etc)
+-bug: didn't update the root pointer, so every time I insert something it 
+would be inserted into a new empty tree 
+-implemented contains function, uses helper function that takes an additional
+parameter of a node pointer
+-in test main, calls contains on an empty tree, on a non-empty tree that 
+doesn't contain the element, and on a non-empty tree that does contain the 
+element  
+-implemented node_count and called it on an empty tree and on non-empty trees 
+ with and without duplicate elements 
+-implemented find_min. Has print statements inside the function that prints 
+whenever there is a node to the left that we can still recurse to (so we haven't
+reached the min key yet). 
+-tested similarly with find max. Called the function on an empty tree, a tree 
+with just one node, a Linked-list style tree, and a regular BST with multiple 
+nodes. 
+-then implemented count_total. Called it on empty tree first, then non-empty 
+tree (but write down what the expected sum is before calling and compare). 
+Called it on a tree that has duplicate nodes and compare to the expected sum to 
+see if the duplicates are accounted for correctly. 
+-implemented tree_height(). Drew some pictures and found the height, then 
+inserted nodes into the tree and called tree_height() to compare. 
+-went back and printed the trees used for testing in insert, just to visualize
+them, but already had print statements in insert() from before
+-pre_order_copy
+-put print statments in the function printing out the original node's data and
+count, then the copied node's data and count
+-inserted some nodes in test main function, drew the tree out on paper and 
+wrote down the pre-order traversal, then compare the traversal to the print 
+statements to see if the order is correct and if the data is copied correctly 
+-implemented the assignment operator. Now that tree_height is implemented, 
+ can use print_tree to visualize the tree. 
+Inserted nodes into tree, print out the result, then create another BST
+instance to be a copy of the first instance, then print out this new tree and 
+compare to the original one.  
+-Called a tree to be set to be a copy of itself -- this should do nothing. 
+However there was a warning from the compiler about self-assignment, 
+"explicitly assigning key of a variable of type 'BinarySearchTree' to itself"
+-also tried calling a non-empty tree to be set as a copy of another non-empty 
+tree -- this is to make sure that the nodes in the first tree are cleared 
+before it copies from the other tree. 
+-remove function -- first tested remove on an empty tree and then on a tree 
+that doesn't contain the key to be removed -- this doesn't do anything. 
+-Then called remove on a tree with duplicate elements, called print_tree to see 
+whether the * that represents dup elements is still there 
+-tested remove on just removing leaf nodes. Worked except when the tree only 
+contains one node -- the root. When the function tried to find the parent of 
+the node (to change left/right children pointers to nullptr), seg fault because
+root has no parent. Needed a separate conditional for if the node is the root 
+-worked on cases when the node to be removed does have a right subtree, then 
+we can use the minimum key of the right subtree to "replace" the removed node
+-there wasn't a very good way to test this except for drawing the tree on paper 
+and drawing the pointer arrows to visualize which pointers need to be changed,
+then implementing the changes and call print_tree to see whether the result is
+as expected/whether there is seg fault. 
+-had print statements in each conditional or recursive case so I know where the 
+function call stopped at an error 
+-tested different BST trees where the node to be removed has different number 
+of children (1 or 2) and at different levels of the tree (whether the parent of
+the to-be-removed node is root or not)
+-worked on cases when the node to be removed doesn't have a right subtree, then
+we need something in the left subtree to replace it 
+-in BST.cpp I originally had the order of lines 306 and 307 switched. There 
+were no seg faults or errors, but the result of the printed tree showed that 
+the BST lost an entire left subtree
+-run testing and hw3 using valgrind and there was a lot of memory leaks. Put 
+print statements in post_order_delete, so whenever a node is freed from the 
+heap, its key would be printed before deleting. 
+-used diff testing with the example program and also ran valgrind on the hw3
+executable compiled with my BST.cpp
+                         ---- TIME SPENT ----
+21 hours
