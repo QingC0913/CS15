@@ -1,0 +1,21 @@
+print
+swap
+dup
+drop
+2 +
+2 3 + 
+print 
+2 #f +
+print
+2 3 -
+print
+#f
+print 
+not 
+print 
+dup 
+print 
+drop 
+print 
+hello 
+clear print 

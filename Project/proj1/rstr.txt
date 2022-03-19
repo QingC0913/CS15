@@ -1,0 +1,24 @@
+//these are some of the different strings that I have tested with parseRString()
+//this is assuming that the opening { and space have already been read 
+//trying to test whether the func gets rid of repeating spaces 
+
+2 3 }
+{ 2 3 +}
+2 3 + { 4 * } }
+1 2 3 { 2 3 } 3 } 
+   2 4 +   { 2   3 + 5 6 3 4 -  2       3 3 4  { 5 }  2 }
+ { 3 4 <= 6 } } { 7 22 13 == #t not print }
+    swap drop print 3 not 4 5 * clear { dup   } }
+2 3 { 5} } not }
+ 1 2 3 + }
+1 2 3 + }
+2 3 + { } 2 * } 
+1 2 3    { 23 } }
+2 3 { 5} } not }
+2 3 { 5 } not }
+1 2 3 } { 4 5 }
+1 2 3 { 4 5 }
+
+
+
+

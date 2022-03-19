@@ -1,1 +1,278 @@
+----------------------------------------------------------------------
+|                      CS 15 PROJECT 1: STACKS                       |
+| [NAME]   Qing Cheng                                                |
+| [DATE]   10/26/2021
+----------------------------------------------------------------------
 
+                           ---- PURPOSE ----
+This program imitates a calculator that utilizes the reverse polish notation
+(RPN). The CalcYouLater can handle arithmetic, boolean, as well as string 
+operations or comparisons by reading inputs. 
+
+                      ---- ACKNOWLEDGEMENTS ----
+-lecture slides (RPN, stacks)
+-StackOverflow, CPlusPlus for C++ syntax, usage, and debugging
+-classmates' and TAs' answers to questions on Piazza 
+-TA office hours
+
+                            ---- FILES ----
+- Datum.h 
+    The Datum class represents a Datum object, which is a container for one 
+    of three types of data that can be stored and utilized by the CalcYouLater:
+    the types are integers, booleans, and rstrings. 
+
+- DatumStack.h 
+    The DatumStack class represents a collection of Datum objects. DatumStack
+     keeps tracks of the number of Datum objects and stores them in the order
+     that they are added until the CalcYouLater retrieves items to perform 
+     operations on them. 
+
+- DatumStack.cpp 
+    DatumStacks can be created empty or with an array of Datum objects. By 
+    utilizing DatumStack functions, the client can access the top element in 
+    the stack, remove, print, and add Datum objects (only from the top), 
+    and check the size of the stack. 
+
+- got_int_func.cpp 
+    contains the got_int function that will be used in the final 
+    calculator; function was implemented by Prof. Mark Sheldon. 
+    The function checks whether a string can be converted into 
+    an int, and if so returns the int value as a reference variable. 
+        
+- hello.cyl 
+    This is a testing file. It tests whether the program throws errors as
+    expected, to cerr, and continues to run after throwing errors. Also 
+    checks if files are opened correctly
+
+-if_tests.cyl
+    This is a testing file. It tests commands involving condtions 
+    (the "if" types of command)
+
+- main.cpp 
+    This is the driver file for CalcYouLater. 
+    Run this file using the compile & run commands below to start the 
+    calculator. 
+
+- Makefile 
+    This file contains the commands for compiling and linking files in this 
+    program. 
+
+- parser.cpp 
+    This file contains the parseRString function that will be used in the 
+    final program. The function reads in rstrings and store them as Datum 
+    objects for later use  
+
+- README 
+    This file contain information about the program and how to use it 
+
+- RPNCalc.h 
+    The RPNCalc class represents the calculator that utilizes Reverse Polish
+    Notation. Users can enter commands or provide an input file, and the 
+    calculator will perform operations on Datum objects that are stored in a 
+    DatumStack.  
+
+- RPNCalc.cpp 
+    The client of the RPNCalc class has to call the public run function to 
+    start the calculator. The calculator supports a variety of commands
+    including duplicating, swapping, printing, arithematic operations, boolean
+    operations, conditionals, reading files, etc, where each type of command 
+    is handled by a private helper function; see RPNCalc.h for a list of 
+    private functions. Other types of commands are unimplemented 
+    and will not be executed. 
+
+- rstr.txt 
+    This file is a list of strings used to test parseRString() 
+
+- test.cyl
+    This is a testing file. It tests whether the program opens files correctly; 
+    note: "recursive" file-opening -- can lead to seg fault if not interrupted 
+
+- test_main.cpp
+    This is a test file. It contains the driver function used to test 
+    the DatumStack functions and was used for initial testing for the RPNCalc
+    class functions 
+
+- testParseRString.cpp 
+    This is a test file. It contains the drive function used to test 
+    the parseRString function using commands from cin and from an 
+    input file. 
+
+
+                 ---- COMPILE / RUN INSTRUCTIONS ----
+-compile using 
+    make CalcYouLater
+-run using 
+    ./CalcYouLater [ < input_command_file ]
+
+
+                ---- DATA STRUCTURES / ALGORITHMS ----  
+    Stacks are LIFO (last-in, first-out) data structures. This means that 
+    values stored in the stack can only be added or removed from the the top. 
+    In other words, the item that was first added to the stack 
+    will be at the bottom of the stack, and it will be reached last. At all 
+    times, the only item accessible to clients of the stack is the top item, 
+    which was added last to the stack. 
+
+    Stacks are good for imitating task interruption and resumption (as 
+    mentioned in the lecture), such as the call stack/activation record. 
+    For example, we start a program in the main function, and main will be
+    pushed onto the call stack. Then main creates an RPNCalc object, so the
+    RPNCalc class's constructor will be called and pushed onto the stack, 
+    interrupting main. When the RPNCalc obj is initialized, the constructor 
+    "ends" and we return to main. The RPNCalc constructor call is popped from
+     the stack. Then, from main, we call RPNCalc's public run function, 
+    and run is pushed onto the stack. From here, we can only 
+    "access" the run function, not the main function, because run() is on 
+    the top of the stack, and main is underneath it. If the user quits 
+    the program, from run() we will return to main(); run is popped off 
+    the stack, main returns 0, and main, too, is popped off the stack. 
+    Now the stack is empty.  
+
+    One advantage of using stacks is that it gives the client limited 
+    freedom with accessing items from the stack that are not the top 
+    element. Stacks are good for analysing nested structures, such as 
+    whether the opening and closing brackets in a string are balanced. 
+    When we utilize a stack to perform operations such as the bracket
+    checking, we don't need to access every item on the stack, so it is
+    actually advantageous that the client has limited access, which 
+    reduces the chance of making unintended changes or mistakes to the other 
+    items in the stack. This also makes implementing stacks relatively 
+    easy, compared to implementing LinkedLists or ArrayLists, since there 
+    is no insertion in the back, at appointed indices, removing from the 
+    back, removing from appointed indices. All items are altered (added 
+    or removed) from one end of the data structure. 
+
+    The disadvantage about stacks is that they are not flexible. If we have 
+    a stack containing multiple items and we want to get to the bottom item, 
+    it will only be reached when everything else on the stack is cleared. 
+    However, that might not be a disadvantage because stacks are designed 
+    to handle specific situations, so if the stack and its operations
+    do not fit what a program wants to accomplish, then one should choose 
+    another data structure to implement the program.  
+
+   In this program, stacks were implemented with the vector library. This way,
+   when implementing, no dynamic memory has to explicitly allocated or recycled
+   (using the "new" operator). In addition, vectors already have some built-in 
+   functions that fit the scope of what we want to achieve with stacks, 
+   including size, clear, default constructor/destructor, and constant line 
+   access to the first or last element, depending where we want the stack's 
+   "top" to be. When using vectors, if I implemented an add-to-front function,
+   then the stack would have to push the new item to the front of the vector 
+   every time, and pop-from-front would mean every element after the removed 
+   first would have to shift up one space as well so that there is no gap. That
+   would be very time-inefficient and takes many extra operations that can be 
+   avoided. Since vectors already have functions that add or remove 
+   elements from the back -- from the same end -- in this program, the back is
+   the "top" of the stack. Thus, no element already in the stack has to shift
+   when something is added or removed. However, from the client's perspective, 
+   a stack is a stack if it accomplishes what it was designed to do, and it 
+   doesn't matter if the elements are accessed from the front or the back of 
+   the vector. In fact, because of encapsulation, for all the client knows, 
+   the program is implemented using stacks, not vectors.  
+
+                           ---- TESTING ----
+-added the Makefile rules  
+-created the .h files and included them in the .cpp files, 
+created main.cpp, try linking and compiling everything and 
+debugged any errors first 
+-wrote a test_main.cpp to test the DatumStack functions one at a time 
+-use print statements (if it's empty, etc) and created a toString func for
+DatumStack, just for testing to check that the Datum objects are added
+correctly/in the right order. It is removed after testing 
+
+ -created parseRString.cpp, where the parseRString is a func in the file with 
+ a main function (temporary, just for testing!). 
+ -Passed cin into the function as input stream to make sure that it compiles 
+ -created conditionals and print statements in the loop that reads the 
+commands to check for opening and closing brackets before implementing 
+recursion 
+ -at first I used get() to read each character, then quickly realized that 
+ it wasn't ideal and read in spaces too, even when there are multiple 
+ consecutive spaces 
+-the spaces in the final string to return were a bit tricky! at first I used 
+stringstream to read in each command that were separated by spaces, then added 
+a space after the string command was stored, but the closing bracket was 
+the recursive case and didn't add a space after it, even if more commands 
+were stored in the string (in a nested way)
+e.g. { 3 4 + {5 6}8 }
+-if I add a space after every closing bracket, then the final rstring would 
+have a space after the closing bracket. Finally I ended up using a 
+conditional so after we return from a recursive call, if we are still in 
+the function (from previous calls) and we still have more commands to read, 
+then a space will be added after the previous closing bracket 
+-if closing bracket is not matched (usually from input file because cin just 
+waits for the bracket), throw a runtime error. Try & catch error in the test 
+main function and see if the error message is printed.   
+-at first I used (not input.eof()) in the parsing loop, but if the command I 
+entered had no space at the end, e.g. "1 3 { 3 } }", then the last bracket is 
+not read. However, if I entered "1 3 { 3 } } ", then the bracket would be 
+read. Then I used (not input.fail()) instead, and it worked for both types of
+input. 
+-used a bunch of differently formatted strings, some correctly formatted and 
+some incorrectly formatted, to check whether the parseRString() can handle 
+different inputs and recognize when all brackets and matched and should return 
+so even if there is more input (i.e. in the input file) after the matched 
+closing brackets, the function should not try to read in more commands
+
+-called RPNCalc from another test main function; the run func in RPNCalc just 
+print to cout "running commands"
+-put got_int function in its own .cpp file, linked it with the test main file
+-in RPNCalc, first created a while loop for reading in inputs from cin
+-first tried reading in ints, if it was, print a statement saying it 
+was an int 
+-then worked on bools and printed similar statements
+-worked on "not" commands -- pushed a bool onto stack, enter "not". The 
+function had test statements stating what the top value was, what the opposite 
+bool was, and what value was pushed onto the stack 
+-to test "dup" command, pushed an int onto stack, call "dup", print, pop, 
+then print again (the two values printed should be the same)
+-to test "swap" command, enter two values, then call print, pop, print again. 
+This was how I discovered I pushed the two Datum objs on backwards (so in 
+the same order they were before they were "swapped")
+-use isBool/isInt/isRString funcs from Datum class to catch wrong-type errors 
+-implemented try & catch for all the funcs that can throw empty-stack errors 
+
+-linked parser to RPNCalc.cpp first to make sure there are no linking errors, 
+then just added an else if statement in the run function so that it recognizes 
+"{ " as a command to call the parser func
+-then the parser func would print out "parse r string called !\n" before we 
+actually push anything onto the stack
+-after, actually push the rstring onto the stack, and print that obj's string 
+to cout again to make sure all the formatting is still correct 
+-add the exec command, at first in the function I only had it print the 
+rstring, using the Datum object's getRString method
+-implemented error-catching if (not x.isRString())
+-added a helper func for run; the wrapper function doesn't take arguments but 
+calls the helper function in a loop, the helper function takes a string command
+-this way, the exec function can call the run(string command) function with the 
+commands in the rstring
+-fileOperation: first make a Datum obj that copies the top obj off the stack; 
+used Datum class's isRString to check if the top Datum is rstring. Extract the 
+file name, but print to cerr a message if is not rstring or if the file 
+couldn't be opened. 
+-if the file is successfully opened, then will store all the contents into a 
+stringstream, which will then be executed one by one in the overloaded run func
+-at first the program printed to cerr a lot of "x: unimplemented" messages, 
+turned out it was because there were no spaces after each command on different 
+lines, so the commands were stored in the stringstream all together e.g.:
+2
+drop
+print
+became "2dropprint" so the func has to add a space after storing each 
+command into the stringstream 
+-also had the bug that the last line of command would be read and executed 
+twice if I used inputstream .fail() or .eof() in the while loop. Saw a 
+Piazza post about using stream >> command instead, I tried and it worked
+
+-create a commands file called hello.cylc as input stream, directed the 
+the output into a file, used diff testing to compare to output of reference 
+program. The hello.cylc tests cases that would print error messages to cerr,
+so I also used diff testing on that with <& output.txt in the commandline 
+
+-call valgrind and found that I had 2 more allocated than freed; it was due 
+to a call to exit(SUCCESS) so I had to modify the "quit" command handling in 
+RPNCalc a bit so the program actually exists the RPNCalc run() entire and 
+back to main. Ran valgrind again, seems okay now 
+
+                         ---- TIME SPENT ----
+42 hours

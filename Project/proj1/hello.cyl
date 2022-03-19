@@ -1,0 +1,58 @@
+if                                  %these should all be empty stack errors
+file
+exec
+drop
+print
+not
+==
+<=
+>=
+>
+<
++
+-
+*
+/
+mod
+#t print #f print
+not print                          %should be true
+10 1000 print 
+swap print                         %should be 10 
+drop print                         %should be 1000
+dup print drop print               %should be 1000
+2 3 + print                        %should be 5
+3 6 * print                        %should be 18
+- print                            %should be -13
+-1 * print                         %should be 13 
+26 swap /  print                   %should be 2
+7 swap % print                     %should be 1
+2 3 <  print                       %should be t
+4 3 <  print                       %should be f
+2 4 <= print                       %should be t
+2 4 >= print                       %should be f 
+2 2 == print                       %should be t
+2 5 ==  print                      %should be f
+2 { 4 + } == print                 %should be f
+#t 5 == print                      %should be f
+{ 4 2 + } print                    
+exec print                         %should be 6
+{ 2 4 < print } exec               %should be t
+
+
+clear
+                                   %should be wrong type errors
+print 
+2 { 2 } +
+#t 3 * 
+#f { 5 + } /
+3 #t < 
+{ hello.txt } file                 %should be invalid 
+2 file 
+5 exec 
+2 0 / 
+2 0 mod 
+{ 2 3 + print { fact.cylc } file print } exec print
+ { fact.cylc 1 }                   %should be invalid
+% clear 
+%6 { fib.cylc } file print 
+%10 { fib_debug.cylc } file print
