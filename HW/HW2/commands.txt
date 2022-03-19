@@ -1,0 +1,25 @@
+p 1 2
+p 1 5
+p 2 3 
+p 3 4
+m m
+m m
+p 3 5
+p 7 12
+m m 
+p 2 8
+p 4 9
+m m 
+m m 
+m m 
+m m 
+p 9 11
+m m
+m m
+p 11 12
+m m 
+m m 
+p 10 3
+m m 
+m m 
+m f

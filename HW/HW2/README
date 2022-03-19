@@ -1,1 +1,223 @@
+/**********************************************************
+* HW2: Metro Simulator
+* Comp 15
+* README
+* Qing Cheng 
+* Oct 2021
+*********************************************************/
+
+Compile/run:
+     - Compile using
+            make MetroSim
+     - run executable with
+            ./MetroSim stationsFile passFile [commands]
+
+
+Program Purpose:
+
+This homework assignment simulates a running train to accommodate
+passengers arriving/departing a metro.  Learn how to design and
+modularize code and work with documented libraries.
+
+
+Acknowledgements: 
+-lecture slides and example files on CS15 website
+-TAs in office hour
+-Piazza
+-ProgramIz.com & TutorialsPoint.com for C++ vector syntax and usage
+-Cpp reference for C++ libraries and documentation 
+-StackOverflow for debugging
+
+Files: 
+
+main.cpp:
+    This is the driver file for the MetroSim program. 
+    Run this file and provide the necessary inputs to start the simulation
+    The simulation will start automatically if the input files are valid. 
+
+MetroSim.cpp:
+     The client should pass in a list of station names in order for the Metro-
+     Sim instance to inistantiate the train Stations and the Train object. 
+     After that, the MetroSim instance will read in and process each of the 
+     client's commands and add Passengers to the simulation, move the Train and
+     faciliate where the Passengers go, or end the simulation. 
+
+MetroSim.h:
+     MetroSim is a class that represents the Metro Simuation itself. It 
+     processes user commands and facilitates movement of the Train as well as 
+     the movement of the Passengers. All the client has to do is to call the 
+     MetroSim instance to start the simulation.
+
+Train.cpp:
+    The Train object is a list of PassengerQueue objects, where each Passenger-
+    Queue represents a list of Passengers in a specific train carriage. Passen-
+    gers broad train carriages based on their destination stations. Note that 
+    the constructor does not add Passengers to the Train; the clients have to 
+    use public Train functions to add or remove Passengers from the Train. 
+
+Train.h:
+    Train is a class that represents a train, where each train carriage 
+    contains an ordered list of Passengers. The Train object keeps track of the
+    Passengers that are currently on board, and clients can use Train function-
+    alities to to have Passengers get on or off the Train. 
+    
+PassengerQueue.cpp 
+    The PassengerQueue class only supports adding Passengers to the back of the
+    queue and removing Passengers from the front of the queue in order to 
+    imitate a queue in real life. Note that the constructor does not add 
+    Passengers to the queue; the clients have to add each Passenger using 
+    the push_back() function. 
+    
+PassengerQueue.h
+    PassengerQueue is a class that represents an ordered list of Passengers. 
+    Every PassengerQueue instance begins empty until the client adds Passengers
+    into the queue. Clients can also remove Passengers from the queue, or 
+    access the first Passenger in the queue and the size of the queue.   
+    
+Passenger.cpp 
+    Clients of the Passenger struct can access the Passenger's information 
+    by using the public print() function or by accessing using the dot operator
+    
+Passenger.h 
+    Passenger is a struct that represents a passenger in the simulation. Every
+    Passenger has a unique passenger id, enters the simulation at a specific 
+    arrival station, and exits the simulation at a destination station. 
+
+Makefile
+    file to link and compile the MetroSim program (and other commands)
+
+stations.txt:
+     an example file containing a list of stations.
+    
+short.txt 
+    shorter list of stations for testing
+
+test_commands.txt:
+     sample list of commands that you could give to the simulator
+
+README
+    this file, documents testing, purpose, files included for submission 
+
+commands.txt
+    a list of commands to input in the simulator for both my own program and 
+    the reference one, can use for diff testing 
+
+unit_tests.h
+    unit_test framework to test each function 
+
+//not provided for HW submission 
+the_MetroSim:
+     reference implementation for students to see how the program should work 
+
+
+Note:  the program should handle all cases.
+
+Data Structures:
+    -vectors
+        vectors are a type of data structure that is already defined in the 
+        C++ vector libary. To use its functionality, simply have 
+        include<vector> at the top of a file. A vector is essentially an 
+        ArrayList, which is a dynamically-sized array that where one could add 
+        or remove elements, among other functionalities.
+        
+        However, there is no ArrayList class in the C++ standard libary, so 
+        if we want to use it, we have to include our own implementation, which
+        usually involves dynamically allocating spaces as the arrayList expands 
+        or shrinks. This means that we have to use the "new" operator, as well
+        as implement the Big Three: copy constructor, destructor, and 
+        overloading the "=" operator...
+         
+        Vectors and arrayLists have very similar functionalities, such as 
+        adding elements in front or back, removing elements in front or back, 
+        getting the size of the list, inserting an element, retrieving an elem,
+        clearing the list, getting the capacity, or checking whether the list 
+        is empty. Of course, using vectors is rather easy because these 
+        functions are already defined. 
+
+Testing:
+
+Here describe the following: process of testing (unit tests), mention
+of bugs you encountered while testing, mention of testing on inputs of
+different sizes and edge cases, good description of base cases you
+considered while testing. Demonstrate a methodical approach to
+testing.  This section of your REAMDE should be very thorough for
+homework assignments.
+
+-after implementing each function in Passenger.cpp, ran make Passenger.o to 
+    make sure it compiles then run unit_test for each to make sure each works
+    as intended. Same for PassengerQueue.o
+-in main, after writing conditional to check number of args, ran just ./a.out 
+    to check that the program is aborted as desired 
+-in main, tried to run program using correct number of args (still got an error
+    because turned out I put if (argc != 3 or argc != 4) instead of the "and" 
+    operator)
+-in main, tried to run program with correct num of args but input files that 
+    did not exist, to check if program prints Error and exit correctly 
+-I tested MetroSim using main since we need command line arguments 
+-created a constructor in MetroSim and use main to call it using
+    a) cin as istream obj 
+    b) an input file as istream obj
+    and each time have each istream read in a num from a file and then print 
+    it to cout 
+-used getline() on stations.txt, used a counter var to count num of lines 
+    (num of stations) and print the num to cout to check if counted correctly
+-not allowed to change PQ public interface so even if I assign name as a 
+    private var, there is no way to access it from outside of the class, so 
+    I created a struct in MetroSim class that contains a PQ (representing a 
+    station) and a str name for the station
+-using the same loop from above, added the step of creating a station struct 
+    for each line that there is in the file. Printed names of various stations 
+    in the stations vector to make sure that each station's struct is correctly
+    initialized 
+-similar to what was used in MetroSim constructor to create vector of Station 
+    structs, initialized the Train obj (from MS constructor) using getline() in
+    Train
+-had to change around the parameters for MetroSim constructor bc depending on 
+    what the input method is. Initially MetroSim constru takes 3 args, one of 
+    which is the commands file. I used a conditional to declare the MetroSim 
+    object in main, but realized that when the condition is evaluated and done,
+    the object goes out of scope. So I modified the constructor (now takes 2 
+    args) and have MetroSim access the commands file from another public method
+    called startSimulation(). Have it print a message to cout to make sure it 
+    worked. 
+-for processing each command in MetroSim, I use string literal comparisons, 
+    and base on which command it is, the func calls other funcs to process 
+    each different command. In each of the helper funcs, I had a message print 
+    to cout stating the name of the function so I know they were called success-
+    fully
+-in the moveTrain func in MetroSim, the Passenger boards the train BEFORE they 
+    dequeue from the station, but if the person dequeue first then they are 
+    gone from the simulation and they can't board the train 
+-I had no idea that after using getline to reach the end of an input file I had
+    to "reset" using clear() so another function can read the file again
+-the moveTrain involves multiple steps: people at the current station 
+    dequeuing from the station/getting on the train, the train moving to the 
+    next station, and people getting off the train at that station. For each 
+    step of the process, I added print statments to dictate where in the loop/
+    in the process the program is currently running. 
+-ran the reference program with a range of commands of different formats 
+    e.g. "mmm", "    m    m m", "m 2", "pop", "p 21", or stations ids that are 
+    out of range, and then tried to implement those behaviors
+-I was having trouble extract each value from an add passenger command, so I 
+    just implemented multiple helper functions to help achieve this 
+    functionality of extracting the arrival and destination station ids from 
+    one line of command while also checking whether they are within range. 
+-used diff testing, found that I had a newline after "Command?" that should not
+    be there so there was a lot of output for diff
+
+Part that you found most difficult:
+
+Here, inditicate the part of the homework that you found the most
+challenging. It could be a concept (ie. stacks) or something specific
+to the homework. This will help us know what to review and what to
+focus on.
+
+Testing was the hardest part. Passenger and PassengerQueue were somewhat inde-
+pendent classes that I could test each function using unit_test, but since 
+Train and MetroSim both need arguments from main from the commandline, and 
+MetroSim has to call certain Train functions, everything becomes connected. 
+Also the syntax can be long and somewhat confusing if I am trying to access 
+a Passenger inside a PassengerQueue inside a struct that is inside a vector. 
+
+Time spent: 41 hours 
 
