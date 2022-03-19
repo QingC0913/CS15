@@ -1,1 +1,19 @@
+Qing Cheng
+Oct 12 2021
+CS15 Lab5 
+practice with recursion: create a maze and solve it using recursive depth-first 
+search 
 
+files: 
+main.cpp
+    driver file for the maze program
+Makefile
+    for linking and compiling program 
+maze.cpp
+    functionalities for the maze 
+maze.h
+    contains the 2D array representing the maze 
+position.h
+    this is a struct representing a spot in the 2D array 
+README:
+    this file 
