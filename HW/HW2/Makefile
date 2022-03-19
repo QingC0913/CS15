@@ -50,7 +50,7 @@ provide:
 	provide comp15 hw2_MetroSim main.cpp \
 				    PassengerQueue.h PassengerQueue.cpp \
 				    Passenger.h Passenger.cpp  \
-					MetroSim.h MetroSim.cpp \
+					MetroSim.h MetroSim.cpp \ 
 					Train.h Train.cpp \
 					short.txt commands.txt \
 					stations.txt test_commands.txt \

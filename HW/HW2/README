@@ -60,31 +60,24 @@ Train.h:
     contains an ordered list of Passengers. The Train object keeps track of the
     Passengers that are currently on board, and clients can use Train function-
     alities to to have Passengers get on or off the Train. 
-    
 PassengerQueue.cpp 
     The PassengerQueue class only supports adding Passengers to the back of the
     queue and removing Passengers from the front of the queue in order to 
     imitate a queue in real life. Note that the constructor does not add 
     Passengers to the queue; the clients have to add each Passenger using 
     the push_back() function. 
-    
 PassengerQueue.h
     PassengerQueue is a class that represents an ordered list of Passengers. 
     Every PassengerQueue instance begins empty until the client adds Passengers
     into the queue. Clients can also remove Passengers from the queue, or 
     access the first Passenger in the queue and the size of the queue.   
-    
 Passenger.cpp 
     Clients of the Passenger struct can access the Passenger's information 
     by using the public print() function or by accessing using the dot operator
-    
 Passenger.h 
     Passenger is a struct that represents a passenger in the simulation. Every
     Passenger has a unique passenger id, enters the simulation at a specific 
     arrival station, and exits the simulation at a destination station. 
-
-Makefile
-    file to link and compile the MetroSim program (and other commands)
 
 stations.txt:
      an example file containing a list of stations.
@@ -95,17 +88,10 @@ short.txt
 test_commands.txt:
      sample list of commands that you could give to the simulator
 
-README
-    this file, documents testing, purpose, files included for submission 
-
 commands.txt
     a list of commands to input in the simulator for both my own program and 
     the reference one, can use for diff testing 
 
-unit_tests.h
-    unit_test framework to test each function 
-
-//not provided for HW submission 
 the_MetroSim:
      reference implementation for students to see how the program should work 
 
@@ -197,7 +183,7 @@ homework assignments.
     in the process the program is currently running. 
 -ran the reference program with a range of commands of different formats 
     e.g. "mmm", "    m    m m", "m 2", "pop", "p 21", or stations ids that are 
-    out of range, and then tried to implement those behaviors
+    out of range, and then tried to implement those behaviors 
 -I was having trouble extract each value from an add passenger command, so I 
     just implemented multiple helper functions to help achieve this 
     functionality of extracting the arrival and destination station ids from 
@@ -212,12 +198,5 @@ challenging. It could be a concept (ie. stacks) or something specific
 to the homework. This will help us know what to review and what to
 focus on.
 
-Testing was the hardest part. Passenger and PassengerQueue were somewhat inde-
-pendent classes that I could test each function using unit_test, but since 
-Train and MetroSim both need arguments from main from the commandline, and 
-MetroSim has to call certain Train functions, everything becomes connected. 
-Also the syntax can be long and somewhat confusing if I am trying to access 
-a Passenger inside a PassengerQueue inside a struct that is inside a vector. 
-
-Time spent: 41 hours 
+Time spent: 
 
