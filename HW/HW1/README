@@ -1,1 +1,122 @@
+----------------------------------------------------------------------
+|                      CS 15 HOMEWORK 1: LISTS                       |
+| [NAME]   Qing Cheng                                                |
+| [DATE]   9/28/2021                                                 |
+----------------------------------------------------------------------
 
+                           ---- PURPOSE ----
+This program offers two different lists that store characters. They
+maintain the stored characters in their given order, with some extra
+features, such as the ability to concatenate lists.
+
+                      ---- ACKNOWLEDGEMENTS ----
+-lecture slides 
+-Shaffer textbook (section on doubly linked lists)
+-StackOverflow for C++ syntax
+-classmates' and TAs' answers to my questions on Piazza 
+
+                            ---- FILES ----
+-CharLinkedList.h - CharLinkedList is a class that represents an ordered
+    list of characters. Each CharLinkedList starts empty, and the client can 
+    add, remove, access, and print characters from the list 
+-CharLinkedList.cpp - the CharLinkedList class can be instantiated with 1)no 
+    parameters, 2)with a single character as the parameter, 3)with a array of 
+    characters as well as the size of that array as the parameters, or 4)by 
+    copying from an existing CharLinkedList class instance. The client modify 
+    the list by using the public functions listed in the .h file  
+-CharArrayList.h - CharArrayList is a class that represents an ordered
+    list of characters. Each CharArrayList starts empty, and the client can 
+    add, remove, access, and print characters to/from the list 
+-CharArrayList.cpp - works just like the CharLinkedList. 
+-unit_test.h - source code for testing each function within the .cpp files 
+-Makefile - commands for compiling and linking files
+-README - this file with information about the program 
+
+                 ---- COMPILE / RUN INSTRUCTIONS ----
+Simply type "unit_test" to run the unit tests for the CharArrayList
+and CharLinkedList classes. This folder contains no driver, or
+application, besides the unit tests for the list classes.
+
+                ---- DATA STRUCTURES / ALGORITHMS ---- 
+-dynamic arrays allocated on the heap 
+    ArrayLists are similar to regular C++ arrays except that they are resizable.
+    ArrayLists are resized by taking advantage of allocating memory space on 
+    the heap. When a bigger ArrayList is needed, a bigger ArrayList allocated 
+    on the heap, everything from the old ArrayList is copied over to the new 
+    ArrayList, and then the old list is recycled and the space freed. When a 
+    smaller ArrayList is needed, a smaller ArrayList is allocated on the heap,
+    everything left in the old ArrayList is copied over to the new ArrayList as
+    needed, and again, the old list is recycled. Some advantages of ArrayLists
+    are that they are contiguous, which makes indexing and accessing elements
+    very easy, even the elements in the middle or at the end of the list. Inser-
+    ting elements at the end is also easy, because the index is directly acce-
+    ssible. The disadvantages are that inserting an element at the front would 
+    mean moving all subsequent elements forward by one index first before the 
+    new element can be inserted, and this takes more time and operations than 
+    the doubly linked list implementation. In addition, whenever the ArrayList 
+    needs to be expanded or shrunk, there is a lot of repetitive operations of 
+    copying elements from the old list to the new list. One can avoid this by 
+    expanding the list by a bigger factor every time, but if the space is not 
+    needed, then a lot of allocated space would be unused.   
+    
+-doubly linked lists 
+    In doubly linked lists, each "element" is a node, which, in the 
+    CharLinkedList, is a self-defined struct that contains a char variable to 
+    store a data value as well as two pointers, one of which points to the node
+    before it (or to nullptr in the case of the first node), and the other 
+    points to the node following it (or to nullptr in the case of the last
+    node). Doubly linked lists differ from singly linked lists in that in 
+    doubly linked lists, each node is connected to the list itself by two 
+    pointers, while singly linked list nodes only have one pointer. Thus, 
+    singly linked lists can only start at a given node and move to the next 
+    node. This saves space but makes certain operations, such as moving 
+    backwards (toward the front) in a list, more difficult. Doubly linked lists,
+    on the other hand, takes up more memory because each node allocates space 
+    for two pointer variables instead of one, but they make moving back and 
+    forth in the list itself more flexible. 
+        Unlinke ArrayLists, linked lists are not contiguous, so elements/nodes
+    not accessible by index. In the CharLinkedList class, however, the linked 
+    list is implemented so that it has characteristics similar to the indexing 
+    system of arrays and ArrayLists, such as by having functions like 
+    elementAt() and replaceAt(), but this is done using a self-defined int var-
+    iable. Thus, every time we need to get to a certain element, we must make 
+    use of a counter variable that iterates thru the indices and a pointer var-
+    iable that moves from one node to the next. Even so, linked lists also has 
+    some advantages over ArrayLists despite not being contiguous. For example,
+    operations for inserting, removing, & accessing nodes at the beginning and 
+    the end of the list are rather easy with the use of front and tail/back 
+    pointers. All that needs to be done is modifying where some pointers are 
+    pointing to; all the nodes in the middle of the list are unmodified and 
+    there is no need to shift or copy them. In addition, there is no need to 
+    "guess" how much space is needed in order to expand the list; we just 
+    create one new node on the heap every time we need to expand the list, or 
+    call delete when we remove a node. Thus we are not allocating more space 
+    than is needed.   
+                           ---- TESTING ----
+CharArrayList.cpp
+    -created the get_cap function that only returns the capacity of the Array-
+    List. This function is only used for testing and is not used in the program.
+    -made the expand function public, only for testing, so that I can run the 
+    get_cap function before and after I call expand() on an instance and see 
+    whether the capcity has doubled. 
+    -
+    
+CharLinkedList.cpp
+    -after implementing the first overloaded constructor, I implemented the 
+    destructor temporarily by having it delete just the front pointer (points 
+    to the first and only node, created by the overloaded constructor) so that 
+    there are no valgrind errors
+    -made the front pointer variable public temporarily so that I could check 
+    it wasn't pointing to nullptr after I have created a new node in the list. 
+    -I used assert in unit_test to make sure that when I insert/remove a 
+    node, the length of the list is as I expected, but I also call print to see 
+    whether the nodes are inserted/removed at the right index. 
+    -I noticed repetitive code in various functions for moving a temporary 
+    pointer to a specified index, so I implemented a private func called 
+    movePointer(). Commented out the repetitive code, called the new func, and 
+    ran unit_test to make sure the new func works as intended in each func that 
+    uses it before removing the old code.  
+
+                         ---- TIME SPENT ----
+
+        38 hours 
